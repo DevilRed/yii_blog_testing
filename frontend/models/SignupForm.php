@@ -53,6 +53,17 @@ class SignupForm extends Model
         $user->setPassword($this->password);
         $user->generateAuthKey();
         
-        return $user->save() ? $user : null;
+        // we need to automatically assign “user” role to every new User whose registered to our blog
+        if ($user->save()) {
+
+            // the following three lines were added:
+            $auth = \Yii::$app->authManager;
+            $userRole = $auth->getRole('user');
+            $auth->assign($userRole, $user->getId());
+
+            return $user;
+        }
+
+        return null;
     }
 }
