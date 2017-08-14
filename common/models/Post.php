@@ -3,6 +3,12 @@
 namespace common\models;
 
 use Yii;
+// for using the behaviors
+use yii\db\ActiveRecord;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\SluggableBehavior;
+use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "post".
@@ -30,6 +36,31 @@ class Post extends \yii\db\ActiveRecord
         return 'post';
     }
 
+    // adding behavior to this model
+    public function behaviors()
+    {
+        return [
+        'timestamp' => [
+        'class' => TimestampBehavior::className(),
+        'attributes' => [
+        ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+        ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+        ],
+        'value' => new Expression('NOW()'),
+        ],
+        [
+        'class' => BlameableBehavior::className(),
+        'createdByAttribute' => 'created_by',
+        'updatedByAttribute' => 'updated_by',
+        ],
+        [
+        'class' => SluggableBehavior::className(),
+        'attribute' => 'title',
+        'slugAttribute' => 'slug',
+        ],
+        ];
+    }
+
     /**
      * @inheritdoc
      * override rules() method by returning the rules that the model attributes should satisfy.
@@ -39,9 +70,9 @@ class Post extends \yii\db\ActiveRecord
         return [
             [['title', 'slug', 'content', 'created_at', 'created_by', 'category_id'], 'required'],
             [['lead_text', 'content'], 'string'],
-            [['created_at', 'updated_at'], 'safe'],
-            [['created_by', 'updated_by', 'category_id'], 'integer'],
-            [['title', 'slug', 'lead_photo'], 'string', 'max' => 128],
+            // [['created_at', 'updated_at'], 'safe'],// removing as these fields are automatically filled before saving model
+            // [['created_by', 'updated_by', 'category_id'], 'integer'],// removing as these fields are automatically filled before saving model
+            // [['title', 'slug', 'lead_photo'], 'string', 'max' => 128],// removing as these fields are automatically filled before saving model
             [['meta_description'], 'string', 'max' => 160],
             [['title'], 'unique'],
             [['slug'], 'unique'],

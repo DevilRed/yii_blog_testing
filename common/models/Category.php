@@ -3,6 +3,10 @@
 namespace common\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\behaviors\SluggableBehavior;
+use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "category".
@@ -22,6 +26,28 @@ class Category extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'category';
+    }
+    /**
+     * @inheritdoc
+     * adding behaviors
+     */
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+                'value' => new Expression('NOW()'),
+            ],
+            [
+                'class' => SluggableBehavior::className(),
+                'attribute' => 'name',
+                'slugAttribute' => 'slug',
+            ],
+        ];
     }
 
     /**
@@ -52,5 +78,14 @@ class Category extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     * added
+     */
+    public function getPosts()
+    {
+        return $this->hasMany(Post::className(), ['category_id' => 'id']);
     }
 }
