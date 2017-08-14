@@ -13,7 +13,10 @@ class m170814_201805_create_tag_table extends Migration
     public function up()
     {
         $this->createTable('tag', [
-            'id' => $this->primaryKey(),
+            'id' => $this->primaryKey(),// id is PK (auto-increment, unique integer)
+            'name' => $this->string(64)->notNull()->unique(), // 'name' is unique 'varchar' type with length of 64 chars, cannot be null
+            'created_at' => $this->datetime()->notNull(), // 'created_at' is 'datetime' type, cannot be null
+            'updated_at' => $this->datetime(), // 'updated_at' is 'datetime' type, can be null, default will be null
         ]);
     }
 
