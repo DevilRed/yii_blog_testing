@@ -12,4 +12,9 @@ return [
         ],
     ],
     'name' => 'My-Yii Blog',// this setting is available under:  Yii::$app->name
+    // fix for assets not working
+    'aliases' => [
+        '@bower' => '@vendor/bower-asset',
+        '@npm'   => '@vendor/npm-asset',
+    ],
 ];
