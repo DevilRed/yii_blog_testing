@@ -26,13 +26,17 @@ services:
 
   mysql:
     image: mysql:5.7
+#    build:
+#            context: .
+#            dockerfile: ./Dockerfile-app
     environment:
       - MYSQL_ROOT_PASSWORD=verysecret
       - MYSQL_DATABASE=yii2_blog
       - MYSQL_USER=blog_user
       - MYSQL_PASSWORD=blog_db
 
-  #pgsql:
+#  https://yktoo.com/en/blog/post/2017/02/18-tutorial-development-with-yii/php/mysql-using-docker/   more info about using an sql to reload the DB
+
   #  image: postgres:9.5
   #  environment:
   #    - POSTGRES_DB=yii2advanced
