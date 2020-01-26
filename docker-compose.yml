@@ -24,16 +24,23 @@ services:
 #      - ./:/app
       - ./:/var/www/html
 
+# connect to this image using: docker-compose exec mysql bash
   mysql:
-    image: mysql:5.7
-#    build:
-#            context: .
-#            dockerfile: ./Dockerfile-app
+#    image: mysql:5.7
+    build:
+      context: .
+      dockerfile: ./Dockerfile-db
+    restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=verysecret
       - MYSQL_DATABASE=yii2_blog
       - MYSQL_USER=blog_user
       - MYSQL_PASSWORD=blog_db
+    ports:
+      - '127.0.0.1:3333:3306'
+    #expose:
+      # opens specified port on the container
+    #  - '3306'
 
 #  https://yktoo.com/en/blog/post/2017/02/18-tutorial-development-with-yii/php/mysql-using-docker/   more info about using an sql to reload the DB
 

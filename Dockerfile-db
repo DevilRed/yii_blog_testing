@@ -1,0 +1,8 @@
+FROM mysql:5.7.16
+
+# Copy database initialization scripts
+# a docker image runs on start any script present is directory below
+COPY init.sql /docker-entrypoint-initdb.d/
+
+# copy dump data
+COPY database.sql /db/
