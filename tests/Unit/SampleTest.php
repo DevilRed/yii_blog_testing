@@ -2,13 +2,16 @@
 
 namespace tests\Unit;
 
-// use yii\phpunit\TestCase;
 use PHPUnit\Framework\TestCase;
+use frontend\models\ContactForm;
 
 class SampleComponentTest extends TestCase {
 
 	public function testSample()
     {
-        $this->assertTrue(1 == 1);
+    	$contact = new ContactForm();
+      // $this->assertTrue(1 == 1);
+      $this->assertInstanceOf(get_class($contact), $contact);
+      $this->assertTrue($contact->sendTrue());
     }
 }

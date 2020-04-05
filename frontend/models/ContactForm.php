@@ -57,4 +57,9 @@ class ContactForm extends Model
             ->setTextBody($this->body)
             ->send();
     }
+
+    public function sendTrue()
+    {
+        return true;
+    }
 }
